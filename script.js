@@ -76,26 +76,54 @@ function showOutput(obj)
 
                 mainClass.removeChild(childClass)
                 
-                
             }
-             }
-             )
-    editBtn.addEventListener('click', ()=>
-    {   
-                
+        })
+
+
+editBtn.addEventListener('click', ()=>
+{   
+
+
+    let newName = prompt('Add Name', 'Name Here')
+    let newEmail = prompt('Add Email', 'Email Here')
+    let newPhone = prompt('Add Phone Number','Phone Number Here')
+    let newTime = prompt('Add Meeting Time','YYYY-MM-DD HH:MM')
+    childClass.textContent = `${newName}  -  ${newEmail}  -  ${newPhone}  -  ${newTime}`          
+    let obj01 = {Name:newName,Email:newEmail,Phone:newPhone,Time:newTime}
+    childClass.append(delBtn)
+    childClass.appendChild(editBtn)
+
+
+    
+    
+    axios.get('https://crudcrud.com/api/5a4462c3e0c74bb7b3faa1e927baeaf2/appointmentData')
+    .then(editObj =>
+    {
+        let results = [];
+
+        let toSearch = obj.Email;
+
+        for(let i=0; i<editObj.data.length; i++) 
+        {
+            for(key in editObj.data[i]) 
+            {
+                if(editObj.data[i][key].indexOf(toSearch)!=-1) 
+                {
+                    results.push(editObj.data[i]);
+                }
+            }
+        }
+        let editId = results[0]._id
+        console.log(editId)
+        let editUrl = `https://crudcrud.com/api/5a4462c3e0c74bb7b3faa1e927baeaf2/appointmentData/${editId}`
+        console.log(editUrl)
+        axios.put(editUrl, obj01)
         
-        let newName = prompt('Add Name')
-        let newEmail = prompt('Add Email')
-        let newPhone = prompt('Add Phone Number')
-        let newTime = prompt('Add Meeting Time','YYYY-MM-DD HH:MM')
-        childClass.textContent = `${newName}  -  ${newEmail}  -  ${newPhone}  -  ${newTime}`          
-        let obj01 = {Name:newName,Email:newEmail,Phone:newPhone,Time:newTime}
-        childClass.append(delBtn)
-        childClass.appendChild(editBtn)
+    }
+    )
 
-
-             })
-         }
+})
+}
 
 
 
