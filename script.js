@@ -7,7 +7,6 @@ function reload(e)
         {
             for(let i=0; i<displayData.data.length; i++)
             {
-                console.log(displayData.data[i])
                 showOutput(displayData.data[i])
             }
         })
@@ -52,6 +51,29 @@ function showOutput(obj)
     {
         if(confirm('Delete User Info?'))
             {
+                axios.get('https://crudcrud.com/api/5a4462c3e0c74bb7b3faa1e927baeaf2/appointmentData')
+                .then(deleteObj =>
+                    {
+                        let results = [];
+
+                        let toSearch = obj.Email;
+
+                        for(var i=0; i<deleteObj.data.length; i++) {
+                        for(key in deleteObj.data[i]) {
+                            if(deleteObj.data[i][key].indexOf(toSearch)!=-1) {
+                            results.push(deleteObj.data[i]);
+                            }
+                        }
+                        }
+                        let delId = results[0]._id
+                        console.log(delId)
+                        let delUrl = `https://crudcrud.com/api/5a4462c3e0c74bb7b3faa1e927baeaf2/appointmentData/${delId}`
+                        console.log(delUrl)
+                        axios.delete(delUrl)
+ 
+                    })
+
+
                 mainClass.removeChild(childClass)
                 
                 
@@ -74,11 +96,6 @@ function showOutput(obj)
 
              })
          }
-
-
-
-
-
 
 
 
